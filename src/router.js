@@ -5,7 +5,7 @@ import HomeView from './views/HomeView.vue'
 const ComingSoon = () => import('./views/ComingSoonView.vue')
 
 export default createRouter({
-  history: createWebHistory(),
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     { path: '/', name: 'home', component: HomeView },
     { path: '/:pathMatch(.*)*', name: 'coming-soon', component: ComingSoon }
