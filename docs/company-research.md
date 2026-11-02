@@ -16,7 +16,7 @@ Gathered 2026-10-30 from secure64.com. Claims below are Secure64's own unless no
 ## What Secure64 does
 
 Fort Collins, Colorado; privately held; ~20 years in DNS. Sells DNS software to **big network operators**, mainly ISPs and mobile carriers (logo wall: T-Mobile, Verizon Business, Lumen, Vodafone Idea, Reliance Jio, Telefonica, Virgin Plus, ARIN, US Government…), plus enterprises, government, schools and libraries.
-Claims to serve 1.5B+ end users. Key differentiators: its own code (not based on BIND, the common open-source DNS software, so it doesn't share its vulnerabilities), a hardened proprietary OS (SourceT), high performance per server, and 24/7 support.
+Claims to serve 1.5B+ end users. Key differentiators: its own code (not based on BIND, the common open-source DNS software, so it doesn't share its vulnerabilities), a hardened proprietary OS (SourceT), high performance per server, and expert support (see content-questions.md on hours).
 
 Tagline: "Protect your USERS. Protect your DATA. Protect your REPUTATION."
 

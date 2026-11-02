@@ -1,32 +1,24 @@
 :root {
-  /* Brand palette (placeholder until Secure64 supplies official colors) */
-  --navy-950: #050d18;
-  --navy-900: #0a1828;
-  --navy-800: #11243a;
-  --navy-700: #1b3352;
-  --teal-400: #2ee6d6;
-  --teal-500: #14c8b8;
-  --teal-600: #0a9c90;
-  --safe: #3ddc84;
-  --danger: #ff5a5f;
-  --amber: #ffb547;
+  /* Taken from the current secure64.com: logo navy, logo green, link gold */
+  --navy: #16305c;
+  --navy-deep: #0f2344;
+  --green: #39b54a;
+  --green-text: #1d7a2c;
+  --gold: #f2c231;
+  --red: #b3162b;
 
-  --ink: #0d1b2a;
-  --ink-soft: #46586b;
-  --line: #dde4ec;
-  --paper: #ffffff;
-  --paper-soft: #f4f7fa;
+  --ink: #1b1f24;
+  --ink-2: #4a525c;
+  --rule: #c8ced6;
+  --rule-light: #e3e6ea;
+  --wash: #f1f3f5;
 
-  --on-dark: #e8f1f8;
-  --on-dark-soft: #9fb3c6;
+  --head: 'Barlow Semi Condensed', 'Arial Narrow', Arial, sans-serif;
+  --body: 'IBM Plex Sans', Arial, sans-serif;
+  --mono: 'IBM Plex Mono', Consolas, monospace;
 
-  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, Consolas, monospace;
-
-  --radius: 14px;
-  --radius-sm: 8px;
-  --container: 1180px;
-  --gutter: clamp(16px, 4vw, 40px);
+  --width: 1160px;
+  --gutter: clamp(16px, 3.5vw, 32px);
 }
 
 *,
@@ -41,143 +33,221 @@ html {
 
 body {
   margin: 0;
-  font-family: var(--font-sans);
-  font-size: 17px;
-  line-height: 1.6;
+  background: #fff;
   color: var(--ink);
-  background: var(--paper);
-  -webkit-font-smoothing: antialiased;
+  font-family: var(--body);
+  font-size: 16.5px;
+  line-height: 1.55;
 }
 
 h1,
 h2,
 h3,
 h4 {
-  line-height: 1.15;
-  letter-spacing: -0.02em;
-  margin: 0 0 0.5em;
+  margin: 0;
+  font-family: var(--head);
+  font-weight: 600;
+  line-height: 1.12;
+  color: var(--navy);
+}
+
+h1 {
+  font-size: clamp(34px, 4.6vw, 54px);
+}
+
+h2 {
+  font-size: clamp(25px, 2.7vw, 32px);
+}
+
+h3 {
+  font-size: 21px;
 }
 
 p {
-  margin: 0 0 1em;
+  margin: 0 0 0.9em;
+}
+
+p:last-child {
+  margin-bottom: 0;
 }
 
 a {
-  color: inherit;
+  color: var(--navy);
+  text-underline-offset: 2px;
 }
 
-img,
-svg {
-  display: block;
-  max-width: 100%;
+a:hover {
+  color: var(--green-text);
 }
 
-.container {
-  width: 100%;
-  max-width: var(--container);
+ul,
+ol {
+  margin: 0 0 0.9em;
+  padding-left: 1.2em;
+}
+
+li {
+  margin-bottom: 0.3em;
+}
+
+code {
+  font-family: var(--mono);
+  font-size: 0.92em;
+}
+
+.wrap {
+  max-width: var(--width);
   margin: 0 auto;
   padding: 0 var(--gutter);
 }
 
-.section {
-  padding: clamp(64px, 9vw, 112px) 0;
+/* Section with its heading in the margin, the way a printed data sheet sets it */
+.band {
+  padding: 44px 0;
+  border-top: 1px solid var(--rule);
 }
 
-.section--soft {
-  background: var(--paper-soft);
+.band--flush {
+  border-top: 0;
 }
 
-.section--dark {
-  background: var(--navy-900);
-  color: var(--on-dark);
+.band__grid {
+  display: grid;
+  grid-template-columns: 250px minmax(0, 1fr);
+  gap: 16px 40px;
 }
 
-.eyebrow {
-  display: inline-block;
-  font-family: var(--font-mono);
-  font-size: 13px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--teal-600);
-  margin-bottom: 14px;
+.band__side h2 {
+  font-size: 25px;
 }
 
-.section--dark .eyebrow {
-  color: var(--teal-400);
+.band__side p {
+  margin-top: 8px;
+  font-size: 15px;
+  color: var(--ink-2);
 }
 
-.section-title {
-  font-size: clamp(30px, 4vw, 44px);
-  font-weight: 800;
-  max-width: 22ch;
+.measure {
+  max-width: 68ch;
 }
 
-.section-lede {
+.lede {
   font-size: 19px;
-  color: var(--ink-soft);
+  line-height: 1.5;
   max-width: 60ch;
 }
 
-.section--dark .section-lede {
-  color: var(--on-dark-soft);
+.note {
+  font-size: 14px;
+  color: var(--ink-2);
 }
 
 .btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 14px 22px;
-  border-radius: 999px;
+  display: inline-block;
+  padding: 10px 18px;
+  background: var(--navy);
+  border: 1px solid var(--navy);
+  border-radius: 2px;
+  color: #fff;
+  font-family: var(--head);
+  font-size: 18px;
   font-weight: 600;
-  font-size: 16px;
   text-decoration: none;
-  border: 1.5px solid transparent;
-  cursor: pointer;
-  transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
 }
 
 .btn:hover {
-  transform: translateY(-1px);
+  background: var(--navy-deep);
+  color: #fff;
 }
 
-.btn--primary {
-  background: var(--teal-500);
-  color: var(--navy-950);
+.btn--plain {
+  background: #fff;
+  color: var(--navy);
 }
 
-.btn--primary:hover {
-  background: var(--teal-400);
+.btn--plain:hover {
+  background: var(--wash);
+  color: var(--navy);
 }
 
-.btn--ghost {
-  border-color: rgba(232, 241, 248, 0.3);
-  color: var(--on-dark);
+/* Ruled tables do most of the work on this site */
+.table-scroll {
+  overflow-x: auto;
 }
 
-.btn--ghost:hover {
-  border-color: var(--teal-400);
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15.5px;
 }
 
-.btn--outline {
-  border-color: var(--line);
-  color: var(--ink);
-  background: var(--paper);
+caption {
+  text-align: left;
+  padding-bottom: 8px;
+  font-size: 14px;
+  color: var(--ink-2);
 }
 
-.btn--outline:hover {
-  border-color: var(--teal-600);
+th,
+td {
+  padding: 9px 16px 9px 0;
+  border-bottom: 1px solid var(--rule-light);
+  text-align: left;
+  vertical-align: top;
+}
+
+thead th {
+  border-bottom: 2px solid var(--navy);
+  font-family: var(--head);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--navy);
+}
+
+tbody th {
+  font-weight: 600;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+/* Rows of link + description */
+.rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 2px solid var(--navy);
+}
+
+.rows > li {
+  display: grid;
+  grid-template-columns: minmax(150px, 230px) minmax(0, 1fr);
+  gap: 4px 24px;
+  margin: 0;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--rule-light);
+}
+
+.rows__name {
+  font-weight: 600;
 }
 
 :focus-visible {
-  outline: 2px solid var(--teal-500);
-  outline-offset: 3px;
+  outline: 2px solid var(--navy);
+  outline-offset: 2px;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    transition-duration: 0.01ms !important;
-    animation-duration: 0.01ms !important;
+@media (max-width: 820px) {
+  .band {
+    padding: 32px 0;
+  }
+
+  .band__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .rows > li {
+    grid-template-columns: minmax(0, 1fr);
   }
 }

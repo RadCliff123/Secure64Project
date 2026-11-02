@@ -1,554 +1,307 @@
 <script setup>
-import DnsLookupDemo from '@/components/DnsLookupDemo.vue'
-import { audiences, credentials, customers, productGroups, proofPoints, steps } from '@/data/site'
+import LookupFigure from '@/components/LookupFigure.vue'
+import { productBySlug, productGroups } from '@/data/products'
+import { blog, formatDate, press } from '@/data/news'
+import { customers } from '@/data/company'
+import { solutions } from '@/data/solutions'
+
+const networks = solutions.filter((s) => s.group === 'network')
+const latest = [press[0], blog[0], blog[1], press[1]]
+
+const proof = [
+  {
+    who: 'DNSperf',
+    when: 'June 2025',
+    what: 'Test results placed LineGUARD as the fastest protective DNS vendor.',
+    href: press[6][2]
+  },
+  {
+    who: 'HPE and AMD',
+    when: 'August 2025',
+    what: 'DNS Cache on an HPE ProLiant DL325 Gen11 with a 5th Gen AMD EPYC 9555 showed a sixfold performance improvement over BIND.',
+    href: 'https://www.amd.com/content/dam/amd/en/documents/solutions/telco/hpe-secure64-white-paper.pdf'
+  },
+  {
+    who: 'CISA and NSA',
+    when: 'April 2025',
+    what: 'Secure64 is listed as a vendor in CISA and NSA guidance on selecting a Protective DNS service.',
+    href: press[7][2]
+  },
+  {
+    who: 'Red Hat',
+    when: 'September 2026',
+    what: 'DNS Cache is certified for Red Hat Enterprise Linux 9.6.',
+    href: blog[0][2]
+  }
+]
 </script>
 
 <template>
-  <!-- Hero -->
-  <section class="hero">
-    <div class="hero__grid-bg" aria-hidden="true"></div>
-    <div class="container hero__inner">
-      <div class="hero__copy">
-        <span class="eyebrow">Protective DNS · Carrier-grade DDI</span>
-        <h1 class="hero__title">Every attack starts with a lookup. <span>We stop it there.</span></h1>
-        <p class="hero__lede">
-          Secure64 blocks phishing, malware and botnets at the DNS layer, before any device connects.
-          It protects the networks of the world’s largest carriers and the 1.5 billion people who use them.
+  <div class="wrap hero">
+    <div class="hero__text">
+      <h1>The DNS inside networks serving more than 1.5&nbsp;billion users</h1>
+      <p class="lede">
+        Every website, app and email starts with a DNS lookup: a device asking where a name lives.
+        Secure64 builds the servers that answer those lookups for phone companies, ISPs, enterprises and
+        government, and blocks the ones headed for phishing or malware.
+      </p>
+      <p class="hero__actions">
+        <RouterLink to="/contact" class="btn">Talk to Secure64</RouterLink>
+        <RouterLink to="/resources/dns-explained">New to DNS? Start here</RouterLink>
+      </p>
+      <p class="note">20 years in DNS. Privately held, based in Fort Collins, Colorado.</p>
+    </div>
+    <LookupFigure class="hero__fig" />
+  </div>
+
+  <section class="story">
+    <div class="wrap story__grid">
+      <div>
+        <h2>A major US carrier moved 6 million users off Cisco Umbrella in under six weeks</h2>
+        <p>
+          The carrier replaced a working Umbrella deployment with LineGUARD, covering children, schools and
+          businesses on its network. Secure64 reports lower cost and better performance after the move.
         </p>
-        <div class="hero__actions">
-          <RouterLink to="/demo" class="btn btn--primary">Book a demo</RouterLink>
-          <a href="#how-it-works" class="btn btn--ghost">How it works</a>
-        </div>
-        <ul class="hero__creds">
-          <li v-for="c in credentials" :key="c.name">
-            <strong>{{ c.name }}</strong><span>{{ c.detail }}</span>
-          </li>
-        </ul>
+        <p><a :href="press[8][2]" target="_blank" rel="noopener">Read the press release</a></p>
       </div>
-      <DnsLookupDemo class="hero__demo" />
+      <table class="story__nums">
+        <tbody>
+          <tr><th scope="row">6 million</th><td>users protected</td></tr>
+          <tr><th scope="row">100 million</th><td>threats blocked each day</td></tr>
+          <tr><th scope="row">50%</th><td>lower cybersecurity cost</td></tr>
+          <tr><th scope="row">3x</th><td>performance</td></tr>
+        </tbody>
+      </table>
     </div>
   </section>
 
-  <!-- Customer logos -->
-  <section id="proof" class="logos" aria-label="Trusted by">
-    <div class="container">
-      <p class="logos__label">Trusted by carriers and operators worldwide</p>
+  <section class="band band--flush">
+    <div class="wrap band__grid">
+      <div class="band__side">
+        <h2>Who runs it</h2>
+      </div>
+      <div>
+        <ul class="rows">
+          <li v-for="n in networks" :key="n.slug">
+            <RouterLink :to="`/solutions/${n.slug}`" class="rows__name">{{ n.name }}</RouterLink>
+            <span>{{ n.short }}</span>
+          </li>
+        </ul>
+        <p class="customers">
+          <b>Customers named on secure64.com:</b> {{ customers.join(', ') }}.
+        </p>
+      </div>
     </div>
-    <div class="logos__track">
-      <ul class="logos__row">
-        <li v-for="(name, i) in [...customers, ...customers]" :key="i" :aria-hidden="i >= customers.length">{{ name }}</li>
+  </section>
+
+  <section class="band">
+    <div class="wrap band__grid">
+      <div class="band__side">
+        <h2>Products</h2>
+        <p><RouterLink to="/products">Compare all products</RouterLink></p>
+      </div>
+      <div class="prod">
+        <div v-for="g in productGroups" :key="g.name">
+          <h3>{{ g.name }}</h3>
+          <dl>
+            <template v-for="s in g.slugs" :key="s">
+              <dt><RouterLink :to="`/products/${s}`">{{ productBySlug[s].name }}</RouterLink></dt>
+              <dd>{{ productBySlug[s].short }}</dd>
+            </template>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap band__grid">
+      <div class="band__side">
+        <h2>Why it isn&rsquo;t built on BIND</h2>
+      </div>
+      <div class="measure">
+        <p>
+          BIND is the most widely deployed DNS software in the world, so a BIND flaw is a problem for a great many
+          networks on the same day. DNS Cache and DNS Authority share no code with it.
+        </p>
+        <p>
+          That independence goes back to the founding. Co-founder Bill Worley was principal architect of HP&rsquo;s
+          PA-RISC processors, then led HP research on secure system architecture, and went on to invent
+          SourceT, Secure64&rsquo;s own secure operating system.
+          <RouterLink to="/company">The company&rsquo;s history</RouterLink>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap band__grid">
+      <div class="band__side">
+        <h2>Outside checks</h2>
+      </div>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Source</th>
+              <th scope="col">Date</th>
+              <th scope="col">Finding</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="p in proof" :key="p.who">
+              <th scope="row" class="nowrap">{{ p.who }}</th>
+              <td class="nowrap">{{ p.when }}</td>
+              <td><a :href="p.href" target="_blank" rel="noopener">{{ p.what }}</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap band__grid">
+      <div class="band__side">
+        <h2>Latest</h2>
+        <p><RouterLink to="/news">All news</RouterLink></p>
+      </div>
+      <ul class="rows">
+        <li v-for="n in latest" :key="n[2]">
+          <span class="note">{{ formatDate(n[0]) }}</span>
+          <a :href="n[2]" target="_blank" rel="noopener">{{ n[1] }}</a>
+        </li>
       </ul>
     </div>
   </section>
 
-  <!-- How it works -->
-  <section id="how-it-works" class="section">
-    <div class="container">
-      <span class="eyebrow">How Protective DNS works</span>
-      <h2 class="section-title">The simplest place to stop a threat is before it starts.</h2>
-      <p class="section-lede">
-        No agents to install and no traffic to reroute. Protection happens at the one step every device
-        already takes: looking up where to go.
-      </p>
-      <ol class="steps">
-        <li v-for="(s, i) in steps" :key="s.title" class="step">
-          <span class="step__num">0{{ i + 1 }}</span>
-          <h3>{{ s.title }}</h3>
-          <p>{{ s.body }}</p>
-        </li>
-      </ol>
-    </div>
-  </section>
-
-  <!-- Audiences -->
-  <section id="audiences" class="section section--soft">
-    <div class="container">
-      <span class="eyebrow">Solutions</span>
-      <h2 class="section-title">Built for the networks you run.</h2>
-      <div class="audiences">
-        <article v-for="a in audiences" :key="a.id" class="audience">
-          <span class="audience__tag">{{ a.eyebrow }}</span>
-          <h3>{{ a.title }}</h3>
-          <p>{{ a.body }}</p>
-          <ul>
-            <li v-for="p in a.points" :key="p">{{ p }}</li>
-          </ul>
-          <RouterLink :to="a.to" class="audience__link">{{ a.cta }} →</RouterLink>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- Numbers -->
-  <section class="section section--dark numbers">
-    <div class="container">
-      <div class="numbers__grid">
-        <div v-for="p in proofPoints" :key="p.label" class="numbers__item">
-          <strong>{{ p.stat }}</strong>
-          <span>{{ p.label }}</span>
-        </div>
-      </div>
-      <div class="callout">
-        <div>
-          <span class="eyebrow">Different by design</span>
-          <h2>Our code. Not someone else’s vulnerabilities.</h2>
-        </div>
-        <p>
-          Most DNS products are built on BIND, the same open-source software, so one bug can hit them all
-          at once. Secure64 wrote its DNS from scratch and runs it on a hardened operating system.
-          When the next BIND flaw lands, your network isn’t part of the blast radius.
+  <section class="offer">
+    <div class="wrap offer__in">
+      <div>
+        <h2>See what&rsquo;s in your own DNS traffic</h2>
+        <p class="measure">
+          Send Secure64 a packet capture of your DNS traffic and they&rsquo;ll send back a free report on the
+          malicious behavior in it.
         </p>
       </div>
-    </div>
-  </section>
-
-  <!-- Products -->
-  <section id="products" class="section">
-    <div class="container">
-      <span class="eyebrow">Products</span>
-      <h2 class="section-title">One platform for the whole DNS lifecycle.</h2>
-      <div class="products">
-        <div v-for="g in productGroups" :key="g.job" class="product-group">
-          <h3 class="product-group__job">{{ g.job }}</h3>
-          <p class="product-group__summary">{{ g.summary }}</p>
-          <RouterLink v-for="p in g.products" :key="p.name" :to="p.to" class="product">
-            <strong>{{ p.name }}</strong>
-            <span>{{ p.body }}</span>
-          </RouterLink>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA -->
-  <section class="cta">
-    <div class="container cta__inner">
-      <div>
-        <h2>See what your network is letting through.</h2>
-        <p>Run Secure64 alongside your current DNS and get a report of the threats it would have stopped.</p>
-      </div>
-      <div class="cta__actions">
-        <RouterLink to="/demo" class="btn btn--primary">Book a demo</RouterLink>
-        <RouterLink to="/try" class="btn btn--ghost">Try Secure64</RouterLink>
-      </div>
-    </div>
-    <div class="container">
-      <p class="cta__urgent">
-        <span aria-hidden="true">●</span> Under attack right now? Call
-        <a href="tel:+13032425890">+1 303 242 5890</a>, 24/7.
-      </p>
+      <RouterLink to="/contact" class="btn">Ask for a traffic analysis</RouterLink>
     </div>
   </section>
 </template>
 
 <style scoped>
-/* Hero */
 .hero {
-  position: relative;
-  overflow: hidden;
-  background: radial-gradient(1200px 600px at 75% 20%, rgba(20, 200, 184, 0.14), transparent 60%),
-    var(--navy-950);
-  color: var(--on-dark);
-  padding: clamp(48px, 7vw, 96px) 0 clamp(56px, 8vw, 104px);
-}
-
-.hero__grid-bg {
-  position: absolute;
-  inset: 0;
-  background-image: linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
-  background-size: 48px 48px;
-  mask-image: linear-gradient(180deg, #000 30%, transparent 95%);
-}
-
-.hero__inner {
-  position: relative;
   display: grid;
-  grid-template-columns: 1.05fr 1fr;
-  gap: clamp(32px, 5vw, 64px);
-  align-items: center;
-}
-
-.hero .eyebrow {
-  color: var(--teal-400);
-}
-
-.hero__title {
-  font-size: clamp(38px, 5.4vw, 64px);
-  font-weight: 800;
-  letter-spacing: -0.035em;
-}
-
-.hero__title span {
-  color: var(--teal-400);
-}
-
-.hero__lede {
-  font-size: 19px;
-  color: var(--on-dark-soft);
-  max-width: 52ch;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: 40px;
+  padding-top: 40px;
+  padding-bottom: 44px;
+  align-items: start;
 }
 
 .hero__actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
-  margin: 28px 0 36px;
+  align-items: center;
+  gap: 12px 18px;
+  margin: 22px 0 18px;
 }
 
-.hero__creds {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: grid;
-  grid-template-columns: repeat(4, auto);
-  gap: 18px;
-  justify-content: start;
-}
-
-.hero__creds li {
-  display: flex;
-  flex-direction: column;
-  padding-left: 12px;
-  border-left: 2px solid rgba(46, 230, 214, 0.35);
-}
-
-.hero__creds strong {
-  font-size: 14px;
-}
-
-.hero__creds span {
-  font-size: 12px;
-  color: var(--on-dark-soft);
-}
-
-/* Logos */
-.logos {
-  background: var(--navy-900);
-  color: var(--on-dark-soft);
-  padding: 28px 0 32px;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.logos__label {
-  font-size: 13px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+.hero h1 {
   margin-bottom: 18px;
 }
 
-.logos__track {
-  overflow: hidden;
-  mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+.story {
+  padding: 36px 0;
+  background: var(--navy);
+  color: #e7ebf1;
 }
 
-.logos__row {
-  display: flex;
-  gap: 56px;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  width: max-content;
-  animation: marquee 40s linear infinite;
-}
-
-.logos__row li {
-  font-size: 20px;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  color: rgba(232, 241, 248, 0.6);
-  white-space: nowrap;
-}
-
-@keyframes marquee {
-  to {
-    transform: translateX(-50%);
-  }
-}
-
-/* Steps */
-.steps {
-  list-style: none;
-  padding: 0;
-  margin: 48px 0 0;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-  counter-reset: none;
-}
-
-.step {
-  padding: 28px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  background: var(--paper);
-}
-
-.step__num {
-  font-family: var(--font-mono);
-  color: var(--teal-600);
-  font-size: 14px;
-  display: block;
-  margin-bottom: 18px;
-}
-
-.step h3 {
-  font-size: 21px;
-}
-
-.step p {
-  color: var(--ink-soft);
-  margin: 0;
-}
-
-/* Audiences */
-.audiences {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-  margin-top: 40px;
-}
-
-.audience {
-  display: flex;
-  flex-direction: column;
-  padding: 32px;
-  background: var(--paper);
-  border-radius: var(--radius);
-  border: 1px solid var(--line);
-  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
-}
-
-.audience:hover {
-  border-color: var(--teal-500);
-  transform: translateY(-3px);
-  box-shadow: 0 18px 40px rgba(13, 27, 42, 0.08);
-}
-
-.audience__tag {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--teal-600);
+.story h2 {
   margin-bottom: 12px;
+  color: #fff;
 }
 
-.audience h3 {
-  font-size: 23px;
+.story a {
+  color: #fff;
 }
 
-.audience p {
-  color: var(--ink-soft);
-}
-
-.audience ul {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 24px;
-}
-
-.audience li {
-  position: relative;
-  padding-left: 24px;
-  margin-bottom: 8px;
-  font-size: 15px;
-}
-
-.audience li::before {
-  content: '';
-  position: absolute;
-  left: 2px;
-  top: 7px;
-  width: 10px;
-  height: 6px;
-  border-left: 2px solid var(--teal-600);
-  border-bottom: 2px solid var(--teal-600);
-  transform: rotate(-45deg);
-}
-
-.audience__link {
-  margin-top: auto;
-  font-weight: 600;
-  color: var(--teal-600);
-  text-decoration: none;
-}
-
-/* Numbers */
-.numbers__grid {
+.story__grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
-  padding-bottom: 56px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.numbers__item strong {
-  display: block;
-  font-size: clamp(36px, 4.5vw, 56px);
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  color: var(--teal-400);
-}
-
-.numbers__item span {
-  color: var(--on-dark-soft);
-  font-size: 15px;
-}
-
-.callout {
-  display: grid;
-  grid-template-columns: 1fr 1.2fr;
+  grid-template-columns: minmax(0, 1.5fr) minmax(260px, 1fr);
   gap: 40px;
-  padding-top: 56px;
   align-items: start;
 }
 
-.callout h2 {
-  font-size: clamp(28px, 3.4vw, 38px);
-  font-weight: 800;
+.story__nums th,
+.story__nums td {
+  border-bottom-color: rgba(255, 255, 255, 0.22);
+  vertical-align: baseline;
 }
 
-.callout p {
-  color: var(--on-dark-soft);
-  font-size: 18px;
+.story__nums th {
+  font-family: var(--head);
+  font-size: 24px;
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
 }
 
-/* Products */
-.products {
+.customers {
+  margin-top: 18px;
+  font-size: 15px;
+}
+
+.prod {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
-  margin-top: 40px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px 40px;
 }
 
-.product-group__job {
-  font-size: 15px;
-  font-family: var(--font-mono);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--teal-600);
-  margin-bottom: 6px;
+.prod h3 {
+  padding-bottom: 6px;
+  border-bottom: 2px solid var(--navy);
 }
 
-.product-group__summary {
-  font-size: 15px;
-  color: var(--ink-soft);
-  min-height: 48px;
-}
-
-.product {
-  display: block;
-  padding: 18px;
-  margin-bottom: 12px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-sm);
-  text-decoration: none;
-  transition: border-color 0.2s, background 0.2s;
-}
-
-.product:hover {
-  border-color: var(--teal-500);
-  background: var(--paper-soft);
-}
-
-.product strong {
-  display: block;
-  font-size: 17px;
-  margin-bottom: 4px;
-}
-
-.product span {
-  font-size: 14px;
-  color: var(--ink-soft);
-  line-height: 1.5;
-}
-
-/* CTA */
-.cta {
-  background: linear-gradient(135deg, var(--navy-800), var(--navy-950));
-  color: var(--on-dark);
-  padding: clamp(56px, 8vw, 96px) 0 40px;
-}
-
-.cta__inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 32px;
-  flex-wrap: wrap;
-}
-
-.cta h2 {
-  font-size: clamp(28px, 3.6vw, 42px);
-  font-weight: 800;
-  max-width: 20ch;
-}
-
-.cta p {
-  color: var(--on-dark-soft);
-  max-width: 52ch;
+dl {
   margin: 0;
 }
 
-.cta__actions {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.cta__urgent {
-  margin: 48px 0 0;
-  padding-top: 24px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  font-size: 15px;
-  color: var(--on-dark-soft);
-}
-
-.cta__urgent span {
-  color: var(--danger);
-  margin-right: 6px;
-}
-
-.cta__urgent a {
-  color: var(--on-dark);
+dt {
+  margin-top: 12px;
   font-weight: 600;
 }
 
-/* Responsive */
-@media (max-width: 1024px) {
-  .products {
-    grid-template-columns: repeat(2, 1fr);
-  }
+dd {
+  margin: 0;
+  font-size: 15px;
+  color: var(--ink-2);
+}
 
-  .hero__creds {
-    grid-template-columns: repeat(2, auto);
-  }
+.offer {
+  margin-top: 8px;
+  padding: 30px 0;
+  background: var(--wash);
+  border-top: 1px solid var(--rule);
+}
+
+.offer h2 {
+  margin-bottom: 8px;
+}
+
+.offer__in {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px 32px;
 }
 
 @media (max-width: 900px) {
-  .hero__inner,
-  .callout {
-    grid-template-columns: 1fr;
-  }
-
-  .steps,
-  .audiences {
-    grid-template-columns: 1fr;
-  }
-
-  .numbers__grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 560px) {
-  .products {
-    grid-template-columns: 1fr;
-  }
-
-  .product-group__summary {
-    min-height: 0;
+  .hero,
+  .story__grid,
+  .prod {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 </style>
